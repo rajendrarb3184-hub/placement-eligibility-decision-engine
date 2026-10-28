@@ -11,11 +11,19 @@ public class Main {
         int backlogs = scanner.nextInt();
         int graduationYear = scanner.nextInt();
 
+        int skillCount = scanner.nextInt();
+        String[] skills = new String[skillCount];
+
+        for (int i = 0; i < skillCount; i++) {
+            skills[i] = scanner.next();
+        }
+
         Candidate candidate = new Candidate(
                 name,
                 percentage,
                 backlogs,
-                graduationYear
+                graduationYear,
+                skills
         );
 
         Job job = new Job(
@@ -26,17 +34,7 @@ public class Main {
                 2026
         );
 
-        boolean percentagePass
-                = candidate.getPercentage() >= job.getMinimumPercentage();
-
-        boolean backlogPass
-                = candidate.getBacklogs() <= job.getMaximumBacklogs();
-
-        boolean yearPass
-                = candidate.getGraduationYear() == job.getRequiredGraduationYear();
-
-        boolean eligible
-                = percentagePass && backlogPass && yearPass;
+        EligibilityChecker checker = new EligibilityChecker();
 
         System.out.println("================================");
         System.out.println("PLACEMENT ELIGIBILITY RESULT");
@@ -48,23 +46,7 @@ public class Main {
         System.out.println("Role      : " + job.getRole());
         System.out.println();
 
-        if (percentagePass) {
-            System.out.println("Percentage      : PASS");
-        } else {
-            System.out.println("Percentage      : FAIL");
-        }
-
-        if (backlogPass) {
-            System.out.println("Backlogs        : PASS");
-        } else {
-            System.out.println("Backlogs        : FAIL");
-        }
-
-        if (yearPass) {
-            System.out.println("Graduation Year : PASS");
-        } else {
-            System.out.println("Graduation Year : FAIL");
-        }
+        boolean eligible = checker.evaluate(candidate, job);
 
         System.out.println();
 
